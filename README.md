@@ -1,51 +1,51 @@
-> 这是我最近设计的一个HDMI转MIPI模块，可以用于驱动各种手机屏幕当显示器用。
+> This is an HDMI to MIPI module I recently designed, which can be used to drive various mobile phone screens as displays.
 
-## 有什么用？
+## What is the use?
 
-大家知道现在的手机屏幕素质非常高，且价格低廉（毕竟有智能手机的普及量撑腰，作为维修配件买的话非常便宜），相比于绝大多数桌面显示器拥有十分无敌的分辨率、像素密度、可视角、色彩还原甚至刷新率。
+Everyone knows that the current mobile phone screen quality is very high, and the price is low (after all, it is backed by the popularity of smart phones, and it is very cheap to buy as a repair accessory). Compared with most desktop monitors, it has very invincible resolution, pixel density, Viewing angle, color reproduction and even refresh rate.
 
-大家又知道，我对于小巧精致的电子产品有执着的追求，可市面上几乎找不到用手机屏幕做的迷你显示器，所以本项目就是为了解决这个需求。至于迷你HDMI显示器有什么用，电视盒子、单反相机、树莓派之类的开发板都带HDMI接口，**即插即用随身携带的高分屏它不香吗？**
+Everyone knows that I have a persistent pursuit of small and exquisite electronic products, but there are almost no mini-displays made with mobile phone screens on the market, so this project is to solve this demand. As for the use of mini HDMI monitors, development boards such as TV boxes, SLR cameras, and Raspberry Pi all have HDMI interfaces. **Isn't the plug-and-play portable high-resolution screen not fragrant?**
 
-## 硬件原理
+## Hardware principle
 
-目前绝大多数的手机屏幕和小型高分辨率高刷新率屏幕基本都是MIPI接口，相比于RGB、LVDS、SPI等接口MIPI是一个非常强大的高速接口，它分为CSI和DSI两个规格（没错就是树莓派上预留的那个DSI），可以根据带宽需求自由配置lane数，且每个lane传输速率超过1Gbps。
+At present, most mobile phone screens and small high-resolution and high-refresh rate screens are basically MIPI interfaces. Compared with RGB, LVDS, SPI and other interfaces, MIPI is a very powerful high-speed interface. It is divided into two specifications, CSI and DSI. (Yes, it is the DSI reserved on the Raspberry Pi), the number of lanes can be freely configured according to bandwidth requirements, and the transmission rate of each lane exceeds 1Gbps.
 
-而HDMI是最为常用的视频接口，几乎所有视频输出设备都会带一个HDMI接口。
+HDMI is the most commonly used video interface, and almost all video output devices will have an HDMI interface.。
 
-**因此我们需要的就是一个HDMI转MIPI的硬件模块。**要实现这个目的可以有几种方案，走FPGA或者用ASIC芯片。
+**So what we need is a hardware module that converts HDMI to MIPI. **There are several schemes to achieve this goal, using FPGA or ASIC chip.
 
-用FPGA的方案这里有个老哥开源了：https://hackaday.io/project/364-mipi-dsi-display-shieldhdmi-adapter
+Here is an open source for the FPGA solution: https://hackaday.io/project/364-mipi-dsi-display-shieldhdmi-adapter
 
-他用Spartan-6 FPGA成功驱动了iPhone4的屏幕并接受HDMI的信号输入，感兴趣的可以参考。
+He used Spartan-6 FPGA to successfully drive the screen of iPhone4 and accept HDMI signal input. You can refer to it if you are interested.
 
 ![](/4.Docs/images/1.jpg)
 
-因为我对FPGA不是很熟，所以我采用ASIC专用IC的方案来设计。
+Because I am not very familiar with FPGAs, I use ASIC-specific IC solutions to design.
 
-#### 东芝方案
+#### Toshiba Solution
 
-东芝有一款TC358870XBG芯片，支持2x4lane的屏幕驱动，输入源是HDMI，这是目前在AR眼镜中比较流行的一个方案，该芯片非常强大，但是缺点是资料极其稀缺。**我花了很长时间搞到了原厂的datasheet和相关文档，仓库里面都共享出来了。**
+Toshiba has a TC358870XBG chip that supports 2x4lane screen driver. The input source is HDMI. This is currently a popular solution in AR glasses. The chip is very powerful, but the disadvantage is that the information is extremely scarce. ++It took me a long time to get the original datasheet and related documents, and they were all shared in the warehouse.**
 
-根据原厂的评估板我也设计了一个测试模块，电路已经开源在仓库。
+I also designed a test module based on the original evaluation board, and the circuit has been open sourced in the warehouse.
 
 
 ![](/4.Docs/images/2.jpg)
 
-这个方案的软件我还没有写，感兴趣的同学可以参考文档做后续开发，**也欢迎有进展的同学提交代码到仓库~**
+I haven’t written the software of this program yet. Interested students can refer to the documentation for follow-up development. **Students who are progressing are also welcome to submit the code to the warehouse~**
 
-> 目前东芝方案的固件代码已经由[ylj2000](https://github.com/ylj2000)基本实现了，其源码已经整合到本仓库，感谢[ylj2000](https://github.com/ylj2000)同学的开源代码~
+> At present, the firmware code of Toshiba's solution has been basically implemented by [ylj2000](https://github.com/ylj2000) , and its source code has been integrated into this warehouse, thanks to the open source code of [ylj2000](https://github.com/ylj2000) students~
 >
-> 大家可以去他的仓库具体了解：
+> You can go to his warehouse to learn more about:
 >
 > [ylj2000/HDMI_To_MIPI: A Hdmi to Mipi conversion module based on Toshiba TC358870 (github.com)](https://github.com/ylj2000/HDMI_To_MIPI)
 
-#### 龙讯方案
+#### Longxun solution
 
-国产还有一个龙讯方案LT6911，与上面的方案相比龙讯性能上稍弱一些，但是该芯片内置了一个51核的MCU，所以可以直接在片上编程（东芝的需要额外加一个单片机用I2C配置芯片）。
+There is also a Longxun solution LT6911 made in China. Compared with the above solution, Longxun has a slightly weaker performance, but the chip has a built-in 51-core MCU, so it can be programmed directly on the chip (Toshiba needs an additional single-chip microcomputer with I2C Configure the chip).
 
-该方案的优点就是成本相对较低，芯片外围电路也更简洁，缺点是，**资料比东芝的还少...**
+The advantage of this scheme is that the cost is relatively low, and the chip peripheral circuit is more concise. The disadvantage is that the **data is less than that of Toshiba...**
 
-厂家不开放软硬资料，连datasheet都没有，所以几乎无法个人开发。**但是**，万能的野生钢铁侠通过一些特殊手段，还是跟代理商拿到了一些资料，包括部分源码（核心lib封装好了我拿不到，只有上层API）。但是因为签了NDA保密协议，源码部分我不好分享出来，除了源码其他部分我都开源了，而大家DIY的话也不需要源码，我可以提供预编译的固件供大家下载，所以这个方案适合给直接复制项目的同学参考。
+Manufacturers do not open software and hard data, and do not even have a datasheet, so it is almost impossible to personally develop it. However , the omnipotent Wild Iron Man obtained some information from the agent through some special methods, including some source code (the core lib is encapsulated and I can't get it, only the upper-level API). But because I signed the NDA confidentiality agreement, it is difficult for me to share the source code part. I have open sourced the other parts except the source code. If you do DIY, you don’t need the source code. I can provide pre-compiled firmware for everyone to download. Direct copy of the project's classmates' reference.
 
 
 
@@ -53,12 +53,12 @@
 
 ![](/4.Docs/images/4.jpg)
 
-最终驱动的效果如下，以5.5寸的屏幕为例：
+The final driving effect is as follows, taking a 5.5-inch screen as an example:
 
 ![](/4.Docs/images/5.jpg)
 
-## 总结
+## to sum up
 
-我后面还会继续用这个模块尝试驱动更多屏幕，有开发能力的同学可以在我给出的东芝方案的基础上继续开发，这个方案的自由度会高很多，我后面有空也会继续完成这个方案的:D
+I will continue to use this module to try to drive more screens later. Students with development ability can continue to develop on the basis of the Toshiba solution I gave. This solution will have a much higher degree of freedom, and I will continue to complete it when I have time. For this scheme: D
 
-#### 找资料和开发不易，记得给仓库点星星哈~~
+#### Finding information and development is not easy, remember to give the repository stars~~
