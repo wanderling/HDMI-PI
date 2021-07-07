@@ -24,7 +24,7 @@ Because I am not very familiar with FPGAs, I use ASIC-specific IC solutions to d
 
 #### Toshiba Solution
 
-Toshiba has a TC358870XBG chip that supports 2x4lane screen driver. The input source is HDMI. This is currently a popular solution in AR glasses. The chip is very powerful, but the disadvantage is that the information is extremely scarce. ++It took me a long time to get the original datasheet and related documents, and they were all shared in the warehouse.**
+Toshiba has a TC358870XBG chip that supports 2x4lane screen driver. The input source is HDMI. This is currently a popular solution in AR glasses. The chip is very powerful, but the disadvantage is that the information is extremely scarce. **It took me a long time to get the original datasheet and related documents, and they were all shared in the warehouse.**
 
 I also designed a test module based on the original evaluation board, and the circuit has been open sourced in the warehouse.
 
